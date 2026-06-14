@@ -173,7 +173,7 @@ const MapPage = () => {
         </div>
 
         {/* Permanent Floating Report Widget */}
-        <div style={{
+        <div className="floating-widget" style={{
           position: 'absolute',
           bottom: '40px',
           left: '50%',

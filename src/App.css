@@ -1158,3 +1158,43 @@
   50% { transform: translate(5%, 10%) scale(1.1); }
   100% { transform: translate(-5%, 5%) scale(0.9); }
 }
+
+/* ========================================================================= */
+/* Mobile Responsiveness for Map Page */
+/* ========================================================================= */
+
+@media (max-width: 768px) {
+  .overlay-ui {
+    padding: 16px;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .sidebar {
+    width: 100%;
+    max-width: 100%;
+    max-height: 45vh; /* Prevents taking up whole screen */
+    padding: 20px;
+    gap: 16px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  }
+  
+  .reports-list {
+    max-height: 120px; /* Make the list scrollable earlier on mobile */
+  }
+
+  .floating-widget {
+    width: 90% !important;
+    bottom: 20px !important;
+    padding: 12px 16px !important;
+    gap: 12px !important;
+    justify-content: space-between;
+  }
+  
+  /* Make "Drop a Pin" button text slightly smaller */
+  .floating-widget button {
+    padding: 10px 16px !important;
+    font-size: 0.9rem !important;
+  }
+}
