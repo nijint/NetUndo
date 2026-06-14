@@ -1,4 +1,4 @@
-# NetUndo 📡
+# NetUndo 
 
 NetUndo is a community-driven web application designed to map and track real-world cellular network coverage across Kerala. Carrier maps often lie; NetUndo doesn't. Join the community in mapping true 5G zones, call drops, and total deadzones before you go off the grid.
 
