@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import 'leaflet/dist/leaflet.css';
+
+:root {
+  /* Elegant Forest Green & Mint Theme */
+  --bg-dark: #06140e;
+  --bg-gradient: radial-gradient(circle at top, #0a241a 0%, #06140e 100%);
+  --text-light: #f1f5f9;
+  --text-muted: #94a3b8;
+  
+  --accent-primary: #00e676; /* Mint/Emerald Green */
+  --accent-primary-hover: #00c853;
+  --accent-secondary: #00b0ff; /* Subtle blue for variety if needed */
+  
+  --glass-bg: rgba(10, 36, 26, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.08); 
+  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  
+  --danger-red: #ff3366;
+  
+  /* Coverage Colors */
+  --coverage-green: #00e676; /* 5G/4G */
+  --coverage-orange: #ff9100; /* 3G */
+  --coverage-red: #ff3366; /* 2G / No Signal */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-dark);
+  background-image: var(--bg-gradient), url('/bg-texture.png');
+  background-blend-mode: overlay, normal;
+  background-size: cover, cover;
+  background-attachment: fixed, fixed;
+  color: var(--text-light);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 24px; /* More elegant rounded corners */
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* Leaflet dark mode overrides */
+.leaflet-container {
+  background: #06140e !important; 
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background-color: var(--glass-bg) !important;
+  color: var(--accent-primary) !important;
+  border-color: var(--glass-border) !important;
+  backdrop-filter: blur(8px);
+}
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background-color: var(--accent-primary) !important;
+  color: var(--bg-dark) !important;
+}
+.leaflet-control-attribution {
+  background: rgba(6, 20, 14, 0.8) !important;
+  color: var(--text-muted) !important;
+  backdrop-filter: blur(4px);
+}
+.leaflet-control-attribution a {
+  color: var(--accent-primary) !important;
+}
