@@ -48,8 +48,6 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
    npm run dev
    ```
 
-5. Open your browser and navigate to `http://localhost:5173` to see the app in action!
-
 ## Contributing 🤝
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/nijint/NetUndo/issues).
 
