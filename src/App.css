@@ -1202,4 +1202,45 @@
     padding: 10px 16px !important;
     font-size: 0.9rem !important;
   }
+
+  /* Landing Page Mobile Fixes */
+  .navbar {
+    padding: 16px 20px;
+  }
+
+  .nav-brand {
+    font-size: 1.3rem;
+    gap: 8px;
+  }
+
+  .nav-btn-primary {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .hero-section {
+    padding: 120px 20px 60px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-top: 16px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+  }
+
+  .btn-pill {
+    width: 100%;
+    text-align: center;
+  }
 }
