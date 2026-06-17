@@ -3,10 +3,27 @@ import React, { useState } from 'react';
 const ReportModal = ({ isOpen, onClose, onSubmit, selectedNetwork, coordinates }) => {
   const [speed, setSpeed] = useState('Poor (2G/E)');
   const [reason, setReason] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   if (!isOpen) return null;
 
   const handleSubmit = () => {
+    // Client-side rate limiting (1 minute cooldown)
+    const lastSubmitTime = localStorage.getItem('netundo_last_report_time');
+    if (lastSubmitTime) {
+      const timeSinceLastSubmit = Date.now() - parseInt(lastSubmitTime, 10);
+      const cooldownMs = 60 * 1000; // 60 seconds
+      if (timeSinceLastSubmit < cooldownMs) {
+        const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastSubmit) / 1000);
+        setErrorMsg(`Please wait ${remainingSeconds}s before submitting again.`);
+        return;
+      }
+    }
+
+    // Update last submit time on successful attempt
+    localStorage.setItem('netundo_last_report_time', Date.now().toString());
+    setErrorMsg('');
+
     onSubmit({
       network: selectedNetwork,
       lat: coordinates.lat,
@@ -55,6 +72,12 @@ const ReportModal = ({ isOpen, onClose, onSubmit, selectedNetwork, coordinates }
             onChange={(e) => setReason(e.target.value)}
           />
         </div>
+
+        {errorMsg && (
+          <div style={{ color: '#ff4d4d', fontSize: '0.9rem', marginBottom: '15px', fontWeight: 'bold' }}>
+            {errorMsg}
+          </div>
+        )}
 
         <div className="modal-actions">
           <button className="btn-secondary" onClick={onClose}>
