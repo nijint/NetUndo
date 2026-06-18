@@ -8,11 +8,12 @@ const ReportModal = ({ isOpen, onClose, onSubmit, selectedNetwork, coordinates }
   if (!isOpen) return null;
 
   const handleSubmit = () => {
-    // Client-side rate limiting (1 minute cooldown)
+    // Client-side rate limiting (30 seconds cooldown)
     const lastSubmitTime = localStorage.getItem('netundo_last_report_time');
+    
     if (lastSubmitTime) {
       const timeSinceLastSubmit = Date.now() - parseInt(lastSubmitTime, 10);
-      const cooldownMs = 60 * 1000; // 60 seconds
+      const cooldownMs = 30 * 1000; // 30 seconds
       if (timeSinceLastSubmit < cooldownMs) {
         const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastSubmit) / 1000);
         setErrorMsg(`Please wait ${remainingSeconds}s before submitting again.`);
