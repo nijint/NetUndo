@@ -4,6 +4,8 @@ import { ArrowLeft } from 'lucide-react';
 import MapContainer from '../components/MapContainer';
 import Sidebar from '../components/Sidebar';
 import ReportModal from '../components/ReportModal';
+import UpdateModal from '../components/UpdateModal';
+import SuccessModal from '../components/SuccessModal';
 import { supabase } from '../supabaseClient';
 
 const MapPage = () => {
@@ -19,6 +21,13 @@ const MapPage = () => {
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingReportCoords, setPendingReportCoords] = useState(null);
+
+  // Update Modal state
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [reportToUpdate, setReportToUpdate] = useState(null);
+
+  // Success Modal state
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   // Read initial state from router navigation (e.g. from LandingPage)
   useEffect(() => {
@@ -121,6 +130,32 @@ const MapPage = () => {
     setIsReportingMode(false);
   };
 
+  const handleUpdatePinClick = (report) => {
+    setReportToUpdate(report);
+    setIsUpdateModalOpen(true);
+  };
+
+  const handleUpdateModalSubmit = async (updateData) => {
+    const { error } = await supabase
+      .from('pin_updates')
+      .insert([updateData]);
+
+    if (error) {
+      console.error('Error submitting update request:', error);
+      alert('Failed to submit update. Ensure the pin_updates table is created in Supabase!');
+    } else {
+      setIsSuccessModalOpen(true);
+    }
+    
+    setIsUpdateModalOpen(false);
+    setReportToUpdate(null);
+  };
+
+  const handleUpdateModalClose = () => {
+    setIsUpdateModalOpen(false);
+    setReportToUpdate(null);
+  };
+
   return (
     <div className="map-page-container" style={{ width: '100vw', height: '100vh', position: 'relative' }}>
       
@@ -158,6 +193,7 @@ const MapPage = () => {
         onConfirmPin={handleConfirmPin}
         reports={reports}
         searchedLocation={searchedLocation}
+        onUpdatePinClick={handleUpdatePinClick}
       />
       
       <div className="overlay-ui">
@@ -232,6 +268,20 @@ const MapPage = () => {
         onSubmit={handleModalSubmit}
         selectedNetwork={selectedNetwork}
         coordinates={pendingReportCoords}
+      />
+
+      <UpdateModal
+        isOpen={isUpdateModalOpen}
+        onClose={handleUpdateModalClose}
+        onSubmit={handleUpdateModalSubmit}
+        report={reportToUpdate}
+      />
+
+      <SuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        title="Update Submitted"
+        message="Your request has been successfully submitted and will be reflected on the map after an official review."
       />
     </div>
   );

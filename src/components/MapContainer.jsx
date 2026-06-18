@@ -42,7 +42,7 @@ const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGe
   return null;
 };
 
-const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmPin, lockedReportCoords, reports, searchedLocation }) => {
+const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmPin, lockedReportCoords, reports, searchedLocation, onUpdatePinClick }) => {
   const [keralaGeoJson, setKeralaGeoJson] = useState(null);
   const lockedPinRef = useRef(null);
   const keralaCenter = [10.8505, 76.2711];
@@ -135,7 +135,24 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
                     {report.network}
                   </h4>
                   <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', color: getSpeedColor(report.speed) }}>{report.speed}</p>
-                  <p style={{ margin: 0, color: '#1a0b2e', fontSize: '0.9rem' }}>"{report.reason}"</p>
+                  <p style={{ margin: '0 0 8px 0', color: '#1a0b2e', fontSize: '0.9rem' }}>"{report.reason}"</p>
+                  {onUpdatePinClick && (
+                    <button 
+                      onClick={() => onUpdatePinClick(report)}
+                      style={{
+                        background: 'none',
+                        border: '1px solid var(--accent-primary)',
+                        color: 'var(--accent-primary)',
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        fontSize: '0.8rem',
+                        cursor: 'pointer',
+                        width: '100%'
+                      }}
+                    >
+                      Update Status
+                    </button>
+                  )}
                 </div>
               </Popup>
             </CircleMarker>
