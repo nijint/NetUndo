@@ -27,7 +27,7 @@ const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGe
 
   useEffect(() => {
     if (searchedLocation && map) {
-      // Use setView instead of flyTo to prevent animation interruption on mount
+
       map.setView([searchedLocation.lat, searchedLocation.lng], 14);
     }
   }, [searchedLocation, map]);
@@ -76,11 +76,11 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
 
   return (
     <div className={`map-wrapper ${isReportingMode ? 'reporting-active' : ''}`}>
-      <LeafletMap 
-        center={initialCenter} 
-        zoom={initialZoom} 
+      <LeafletMap
+        center={initialCenter}
+        zoom={initialZoom}
         minZoom={7}
-        style={{ height: '100%', width: '100%' }} 
+        style={{ height: '100%', width: '100%' }}
         zoomControl={false}
       >
         <TileLayer
@@ -88,9 +88,9 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
         />
 
-        <MapController 
-          isReportingMode={isReportingMode} 
-          onMapClick={onMapClick} 
+        <MapController
+          isReportingMode={isReportingMode}
+          onMapClick={onMapClick}
           searchedLocation={searchedLocation}
           keralaGeoJson={keralaGeoJson}
         />
@@ -99,7 +99,7 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
           <GeoJSON data={keralaGeoJson} style={geoJsonStyle} interactive={false} />
         )}
 
-        {/* Render simulated coverage zones as geographical circles */}
+
         {MOCK_COVERAGE[selectedNetwork]?.map((zone, index) => (
           <Circle
             key={`sim-${index}`}
@@ -109,12 +109,12 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
               color: zone.color,
               fillColor: zone.color,
               fillOpacity: 0.4,
-              weight: 0 // No border for softer look
+              weight: 0
             }}
           />
         ))}
 
-        {/* Render user reports as CircleMarkers */}
+
         {allReports
           .filter(report => report.network === selectedNetwork)
           .map(report => (
@@ -137,7 +137,7 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
                   <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', color: getSpeedColor(report.speed) }}>{report.speed}</p>
                   <p style={{ margin: '0 0 8px 0', color: '#1a0b2e', fontSize: '0.9rem' }}>"{report.reason}"</p>
                   {onUpdatePinClick && (
-                    <button 
+                    <button
                       onClick={() => onUpdatePinClick(report)}
                       style={{
                         background: 'none',
@@ -156,7 +156,7 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
                 </div>
               </Popup>
             </CircleMarker>
-        ))}
+          ))}
 
         {/* Locked Report Pin */}
         {lockedReportCoords && (
@@ -175,7 +175,7 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
             <Popup className="custom-popup" closeButton={false} autoClose={false} closeOnClick={false}>
               <div style={{ padding: '8px', textAlign: 'center' }}>
                 <p style={{ margin: '0 0 12px 0', color: '#1a0b2e', fontWeight: 'bold' }}>Pin Locked</p>
-                <button 
+                <button
                   onClick={onConfirmPin}
                   style={{
                     background: 'var(--accent-primary)',
