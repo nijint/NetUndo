@@ -26,7 +26,6 @@ const SearchBar = ({ onLocationSelect }) => {
       }
       setIsSearching(true);
       try {
-        // Appending 'Kerala' to restrict results
         const searchQuery = `${query}, Kerala`;
         const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`, {
           headers: {
@@ -47,7 +46,7 @@ const SearchBar = ({ onLocationSelect }) => {
   }, [query]);
 
   const handleSelect = (result) => {
-    setQuery(result.display_name.split(',')[0]); // Set just the main place name
+    setQuery(result.display_name.split(',')[0]);
     setShowDropdown(false);
     onLocationSelect({
       lat: parseFloat(result.lat),

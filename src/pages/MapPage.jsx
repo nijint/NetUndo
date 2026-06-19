@@ -18,18 +18,14 @@ const MapPage = () => {
   const [searchedLocation, setSearchedLocation] = useState(null);
   const [lockedReportCoords, setLockedReportCoords] = useState(null);
   
-  // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingReportCoords, setPendingReportCoords] = useState(null);
 
-  // Update Modal state
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [reportToUpdate, setReportToUpdate] = useState(null);
 
-  // Success Modal state
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
-  // Read initial state from router navigation (e.g. from LandingPage)
   useEffect(() => {
     if (location.state?.openReportingMode) {
       setIsReportingMode(true);
@@ -39,7 +35,6 @@ const MapPage = () => {
     }
   }, [location.state]);
 
-  // Fetch initial pins from Supabase
   useEffect(() => {
     const fetchPins = async () => {
       const { data, error } = await supabase.from('pins').select('*');
@@ -73,7 +68,6 @@ const MapPage = () => {
     }
   };
 
-  // When toggling reporting mode off, clear any locked pin
   const toggleReportingMode = () => {
     const nextMode = !isReportingMode;
     setIsReportingMode(nextMode);

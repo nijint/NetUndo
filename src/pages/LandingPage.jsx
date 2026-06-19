@@ -11,7 +11,7 @@ const AnimatedLogo = () => {
     { text: '4G', color: 'green', level: 3 },
     { text: '5G', color: 'green', level: 4 }
   ];
-  const [index, setIndex] = useState(4); // Start at 5G
+  const [index, setIndex] = useState(4);
 
   useEffect(() => {
     const interval = setInterval(() => {

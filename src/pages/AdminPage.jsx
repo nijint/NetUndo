@@ -33,9 +33,6 @@ const AdminPage = () => {
 
   const fetchPendingUpdates = async () => {
     setLoading(true);
-    // Fetch updates and join with the original pin details
-    // Since we don't have a formal foreign key setup on the frontend schema knowledge,
-    // we do a simple query and join manually or rely on Supabase relationship
     const { data: updatesData, error: updatesError } = await supabase
       .from('pin_updates')
       .select('*, pins!inner(*)')
@@ -51,7 +48,6 @@ const AdminPage = () => {
   };
 
   const handleApprove = async (update) => {
-    // 1. Update the original pin
     const { error: pinError } = await supabase
       .from('pins')
       .update({
@@ -66,7 +62,6 @@ const AdminPage = () => {
       return;
     }
 
-    // 2. Mark update as approved
     const { error: updateError } = await supabase
       .from('pin_updates')
       .update({ status: 'approved' })
@@ -78,7 +73,6 @@ const AdminPage = () => {
       return;
     }
 
-    // Refresh list
     setPendingUpdates(prev => prev.filter(u => u.id !== update.id));
   };
 
@@ -94,7 +88,6 @@ const AdminPage = () => {
       return;
     }
 
-    // Refresh list
     setPendingUpdates(prev => prev.filter(u => u.id !== updateId));
   };
 
