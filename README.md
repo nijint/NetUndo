@@ -54,5 +54,5 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 ## License 📝
 This project is [MIT](https://choosealicense.com/licenses/mit/) licensed.
 
----
+## 👨‍💻 Author
 Made with chaya ☕ by [nijint](https://github.com/nijint)
