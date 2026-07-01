@@ -5,57 +5,86 @@ const LocationPromptModal = ({ isOpen, onConfirm, onCancel }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content glass-panel" style={{ textAlign: 'center', padding: '32px 24px', maxWidth: '420px' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-          <div style={{ 
-            background: 'rgba(0, 230, 118, 0.1)', 
-            padding: '16px', 
-            borderRadius: '50%',
-            border: '1px solid rgba(0, 230, 118, 0.3)',
-            boxShadow: '0 0 20px rgba(0, 230, 118, 0.2)'
-          }}>
-            <MapPin size={48} color="var(--accent-primary)" />
-          </div>
+    <div className="modal-overlay" style={{ background: 'rgba(0, 0, 0, 0.15)', backdropFilter: 'none' }}>
+      <div 
+        className="glass-panel" 
+        style={{ 
+          textAlign: 'center', 
+          padding: '20px 24px', 
+          maxWidth: '340px',
+          width: '90%',
+          background: 'rgba(6, 20, 14, 0.95)',
+          border: '1px solid rgba(0, 230, 118, 0.3)',
+          borderRadius: '20px',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 230, 118, 0.05)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '14px',
+          pointerEvents: 'auto'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
+          <MapPin size={20} color="var(--accent-primary)" />
+          <h3 style={{ margin: 0, color: '#fff', fontSize: '1.15rem', fontWeight: 700 }}>
+            Auto-Detect Location?
+          </h3>
         </div>
-        <h2 style={{ marginBottom: '12px', color: '#fff', fontSize: '1.6rem', fontWeight: 800 }}>
-          Enable Auto-Pinning?
-        </h2>
-        <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', marginBottom: '28px', fontSize: '0.95rem' }}>
-          Would you like NetUndo to automatically access your location and drop a pin option at your exact spot to report coverage?
+        
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0, lineHeight: '1.4' }}>
+          NetUndo will locate you to drop a pin option at your exact spot.
         </p>
-        <div className="modal-actions" style={{ display: 'flex', gap: '12px', width: '100%' }}>
+
+        <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
           <button 
-            className="btn-secondary" 
             onClick={onCancel}
             style={{ 
-              padding: '14px 20px', 
-              borderRadius: '16px', 
+              padding: '10px 16px', 
+              borderRadius: '12px', 
               fontWeight: 600, 
               cursor: 'pointer',
-              fontSize: '0.95rem',
-              flex: 1
+              fontSize: '0.85rem',
+              background: 'rgba(255, 255, 255, 0.05)',
+              color: 'var(--text-light)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              flex: 1,
+              fontFamily: 'inherit',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.05)';
             }}
           >
-            No, Pin Manually
+            No, Manually
           </button>
           <button 
-            className="btn-submit" 
             onClick={onConfirm}
             style={{ 
-              padding: '14px 20px', 
-              borderRadius: '16px', 
+              padding: '10px 16px', 
+              borderRadius: '12px', 
               fontWeight: 700, 
               cursor: 'pointer',
-              fontSize: '0.95rem',
+              fontSize: '0.85rem',
               background: 'var(--accent-primary)',
               color: '#000',
               border: 'none',
-              boxShadow: '0 4px 15px rgba(0, 230, 118, 0.4)',
-              flex: 1
+              boxShadow: '0 4px 12px rgba(0, 230, 118, 0.3)',
+              flex: 1,
+              fontFamily: 'inherit',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'var(--accent-primary-hover)';
+              e.target.style.boxShadow = '0 6px 16px rgba(0, 230, 118, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'var(--accent-primary)';
+              e.target.style.boxShadow = '0 4px 12px rgba(0, 230, 118, 0.3)';
             }}
           >
-            Yes, Auto-Locate
+            Yes, Locate
           </button>
         </div>
       </div>
