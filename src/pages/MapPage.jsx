@@ -37,12 +37,18 @@ const MapPage = () => {
 
   useEffect(() => {
     if (navigator.geolocation) {
+      const hasAutoPinned = localStorage.getItem('netundo_has_auto_pinned');
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          const userLoc = { lat: latitude, lng: longitude };
-          setLockedReportCoords(userLoc);
-          setIsReportingMode(true);
+          
+          if (!hasAutoPinned) {
+            const userLoc = { lat: latitude, lng: longitude };
+            setLockedReportCoords(userLoc);
+            setIsReportingMode(true);
+            localStorage.setItem('netundo_has_auto_pinned', 'true');
+          }
 
           if (!location.state?.searchedLocation) {
             setSearchedLocation({
