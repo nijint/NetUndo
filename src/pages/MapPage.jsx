@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import ReportModal from '../components/ReportModal';
 import UpdateModal from '../components/UpdateModal';
 import SuccessModal from '../components/SuccessModal';
+import LocationPromptModal from '../components/LocationPromptModal';
 import { supabase } from '../supabaseClient';
 
 const MapPage = () => {
@@ -25,6 +26,7 @@ const MapPage = () => {
   const [reportToUpdate, setReportToUpdate] = useState(null);
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isLocationPromptOpen, setIsLocationPromptOpen] = useState(!location.state?.searchedLocation);
 
   useEffect(() => {
     if (location.state?.openReportingMode) {
@@ -35,20 +37,15 @@ const MapPage = () => {
     }
   }, [location.state]);
 
-  useEffect(() => {
+  const handleLocationConfirm = () => {
+    setIsLocationPromptOpen(false);
     if (navigator.geolocation) {
-      const hasAutoPinned = localStorage.getItem('netundo_has_auto_pinned');
-
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          
-          if (!hasAutoPinned) {
-            const userLoc = { lat: latitude, lng: longitude };
-            setLockedReportCoords(userLoc);
-            setIsReportingMode(true);
-            localStorage.setItem('netundo_has_auto_pinned', 'true');
-          }
+          const userLoc = { lat: latitude, lng: longitude };
+          setLockedReportCoords(userLoc);
+          setIsReportingMode(true);
 
           if (!location.state?.searchedLocation) {
             setSearchedLocation({
@@ -64,7 +61,11 @@ const MapPage = () => {
         { enableHighAccuracy: true }
       );
     }
-  }, []);
+  };
+
+  const handleLocationCancel = () => {
+    setIsLocationPromptOpen(false);
+  };
 
   useEffect(() => {
     const fetchPins = async () => {
@@ -283,6 +284,12 @@ const MapPage = () => {
         onClose={() => setIsSuccessModalOpen(false)}
         title="Update Submitted"
         message="Your request has been successfully submitted and will be reflected on the map after an official review."
+      />
+
+      <LocationPromptModal 
+        isOpen={isLocationPromptOpen}
+        onConfirm={handleLocationConfirm}
+        onCancel={handleLocationCancel}
       />
     </div>
   );
