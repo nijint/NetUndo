@@ -192,7 +192,7 @@ const MapPage = () => {
           position: 'absolute',
           top: '24px',
           left: '24px',
-          zIndex: 1000,
+          zIndex: 3000,
           background: 'rgba(6, 20, 14, 0.8)',
           border: '1px solid rgba(255,255,255,0.1)',
           backdropFilter: 'blur(8px)',
@@ -236,7 +236,7 @@ const MapPage = () => {
       </div>
 
       {/* Permanent Floating Report Widget */}
-      <div className="floating-widget">
+      <div className="floating-widget" style={{ justifyContent: searchedLocation ? 'space-between' : 'center' }}>
         {searchedLocation && (
           <>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
