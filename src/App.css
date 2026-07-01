@@ -361,6 +361,45 @@
   z-index: 1;
 }
 
+.map-page-container {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+}
+
+.floating-widget {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(6, 20, 14, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  border-radius: 30px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 20px rgba(0, 230, 118, 0.1);
+  z-index: 1020;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+.floating-widget button {
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
 .overlay-ui {
   position: absolute;
   top: 0;
@@ -531,7 +570,7 @@
   height: 100vh;
   background: rgba(6, 20, 14, 0.8);
   backdrop-filter: blur(8px);
-  z-index: 1000;
+  z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1190,17 +1229,19 @@
   }
 
   .floating-widget {
-    width: 90% !important;
-    bottom: 20px !important;
-    padding: 12px 16px !important;
-    gap: 12px !important;
+    width: 90%;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    padding: 12px 16px;
+    gap: 12px;
     justify-content: space-between;
+    left: 50%;
+    transform: translateX(-50%);
   }
   
   /* Make "Drop a Pin" button text slightly smaller */
   .floating-widget button {
-    padding: 10px 16px !important;
-    font-size: 0.9rem !important;
+    padding: 10px 16px;
+    font-size: 0.9rem;
   }
 
   /* Landing Page Mobile Fixes */

@@ -2,7 +2,7 @@
 @import 'leaflet/dist/leaflet.css';
 
 :root {
-  /* Elegant Forest Green & Mint Theme */
+  
   --bg-dark: #06140e;
   --bg-gradient: radial-gradient(circle at top, #0a241a 0%, #06140e 100%);
   --text-light: #f1f5f9;

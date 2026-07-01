@@ -36,6 +36,31 @@ const MapPage = () => {
   }, [location.state]);
 
   useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const userLoc = { lat: latitude, lng: longitude };
+          setLockedReportCoords(userLoc);
+          setIsReportingMode(true);
+
+          if (!location.state?.searchedLocation) {
+            setSearchedLocation({
+              lat: latitude,
+              lng: longitude,
+              name: 'Current Location'
+            });
+          }
+        },
+        (error) => {
+          console.warn("Geolocation permission denied or error:", error);
+        },
+        { enableHighAccuracy: true }
+      );
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchPins = async () => {
       const { data, error } = await supabase.from('pins').select('*');
       if (error) {
@@ -151,7 +176,7 @@ const MapPage = () => {
   };
 
   return (
-    <div className="map-page-container" style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+    <div className="map-page-container">
       
       {/* Back Button */}
       <button 
@@ -201,59 +226,35 @@ const MapPage = () => {
             reports={reports}
           />
         </div>
+      </div>
 
-        {/* Permanent Floating Report Widget */}
-        <div className="floating-widget" style={{
-          position: 'absolute',
-          bottom: '40px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'rgba(6, 20, 14, 0.9)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(0, 230, 118, 0.3)',
-          borderRadius: '30px',
-          padding: '16px 24px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '24px',
-          boxShadow: '0 20px 50px rgba(0,0,0,0.8), 0 0 20px rgba(0, 230, 118, 0.1)',
-          zIndex: 1000,
-          pointerEvents: 'auto'
-        }}>
-          {searchedLocation && (
-            <>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>
-                  Area
-                </span>
-                <span style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700 }}>
-                  {searchedLocation.name.split(',')[0]}
-                </span>
-              </div>
-              <div style={{ width: '1px', height: '40px', background: 'rgba(255,255,255,0.1)' }}></div>
-            </>
-          )}
+      {/* Permanent Floating Report Widget */}
+      <div className="floating-widget">
+        {searchedLocation && (
+          <>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>
+                Area
+              </span>
+              <span style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700 }}>
+                {searchedLocation.name.split(',')[0]}
+              </span>
+            </div>
+            <div style={{ width: '1px', height: '40px', background: 'rgba(255,255,255,0.1)' }}></div>
+          </>
+        )}
 
-          <button 
-            onClick={toggleReportingMode}
-            style={{
-              background: isReportingMode ? 'transparent' : 'var(--accent-primary)',
-              color: isReportingMode ? 'var(--accent-primary)' : '#000',
-              border: isReportingMode ? '1px solid var(--accent-primary)' : 'none',
-              padding: '12px 24px',
-              borderRadius: '30px',
-              fontWeight: 700,
-              fontSize: '1rem',
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-              transition: 'all 0.2s',
-              boxShadow: isReportingMode ? 'none' : '0 4px 15px rgba(0, 230, 118, 0.4)',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            {isReportingMode ? 'Cancel Pinning' : 'Drop a Pin Here'}
-          </button>
-        </div>
+        <button 
+          onClick={toggleReportingMode}
+          style={{
+            background: isReportingMode ? 'transparent' : 'var(--accent-primary)',
+            color: isReportingMode ? 'var(--accent-primary)' : '#000',
+            border: isReportingMode ? '1px solid var(--accent-primary)' : 'none',
+            boxShadow: isReportingMode ? 'none' : '0 4px 15px rgba(0, 230, 118, 0.4)'
+          }}
+        >
+          {isReportingMode ? 'Cancel Pinning' : 'Drop a Pin Here'}
+        </button>
       </div>
 
       <ReportModal 
