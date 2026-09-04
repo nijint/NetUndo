@@ -4,11 +4,12 @@ NetUndo is a community-driven web application designed to map and track real-wor
 
 ## Features ✨
 
-- **Interactive Live Map:** Explore a full coverage map of Kerala powered by Leaflet, displaying live community-reported signal data.
-- **Community Reporting:** Found a deadzone or a blazing fast 5G spot? Drop a pin to help map out true connectivity.
-- **Coverage Insights:** View signal strength (5G, 4G, 3G, 2G, Deadzone), carrier details, and user comments at a glance.
-- **Location Search:** Quickly jump to specific cities or areas to check existing network data.
-- **Premium UI:** A sleek, modern dark-mode aesthetic with smooth glassmorphism and animations.
+- **Interactive Live Map:** Explore a full coverage map of Kerala powered by Leaflet, displaying live community-reported signal data with dynamic zoom-scaled circle markers.
+- **Dedicated 5G & 4G Signal Mapping:** Separate **5G Violet** and **4G Green** circle markers for precise network reporting and visual clarity.
+- **Community Reporting:** Found a deadzone, a 4G spot, or blazing fast 5G coverage? Drop a pin to help map out true connectivity.
+- **Coverage Insights & Signal Key:** View distinct signal types (**5G Violet**, **4G Green**, **3G Orange**, **2G/Dead Red**), carrier details, and user comments at a glance.
+- **Location Search:** Quickly jump to specific cities or areas in Kerala to check existing network data.
+- **Premium UI:** A sleek, modern dark-mode aesthetic with smooth glassmorphism, animated signal logo, and responsive map controls.
 
 ## Tech Stack 🛠️
 

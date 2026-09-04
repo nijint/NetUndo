@@ -3,6 +3,12 @@ import { MapContainer as LeafletMap, TileLayer, Popup, CircleMarker, Circle, use
 import L from 'leaflet';
 
 const SPEED_COLORS = {
+  'Excellent (5G)': 'var(--coverage-violet)',
+  '5G Speed': 'var(--coverage-violet)',
+  '5G': 'var(--coverage-violet)',
+  'Good (4G)': 'var(--coverage-green)',
+  '4G Speed': 'var(--coverage-green)',
+  '4G': 'var(--coverage-green)',
   'Excellent (5G/4G)': 'var(--coverage-green)',
   'Fair (3G)': 'var(--coverage-orange)',
   'Poor (2G/E)': 'var(--coverage-red)',
@@ -14,7 +20,26 @@ const getSpeedColor = (speed) => SPEED_COLORS[speed] || 'var(--coverage-red)';
 const MOCK_COVERAGE = {};
 const MOCK_REPORTS = [];
 
-const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGeoJson }) => {
+const getMarkerRadius = (zoom) => {
+  if (zoom <= 7) return 4;
+  if (zoom <= 9) return 5;
+  if (zoom <= 11) return 7;
+  if (zoom <= 13) return 9;
+  return 11;
+};
+
+const getMarkerWeight = (zoom) => {
+  if (zoom <= 8) return 1;
+  if (zoom <= 11) return 1.5;
+  return 2;
+};
+
+const getMarkerOpacity = (zoom) => {
+  if (zoom <= 8) return 0.8;
+  return 0.5;
+};
+
+const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGeoJson, onZoomChange }) => {
   const map = useMap();
 
   useMapEvents({
@@ -23,14 +48,23 @@ const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGe
         onMapClick(e.latlng);
       }
     },
+    zoomend() {
+      if (onZoomChange) onZoomChange(map.getZoom());
+    }
   });
 
   useEffect(() => {
-    if (searchedLocation && map) {
-
-      map.setView([searchedLocation.lat, searchedLocation.lng], 14);
+    if (map && onZoomChange) {
+      onZoomChange(map.getZoom());
     }
-  }, [searchedLocation, map]);
+  }, [map, onZoomChange]);
+
+  useEffect(() => {
+    if (searchedLocation && map) {
+      map.setView([searchedLocation.lat, searchedLocation.lng], 14);
+      if (onZoomChange) onZoomChange(14);
+    }
+  }, [searchedLocation, map, onZoomChange]);
 
   useEffect(() => {
     if (keralaGeoJson) {
@@ -44,6 +78,8 @@ const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGe
 
 const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmPin, lockedReportCoords, reports, searchedLocation, onUpdatePinClick }) => {
   const [keralaGeoJson, setKeralaGeoJson] = useState(null);
+  const initialZoom = searchedLocation ? 14 : 7;
+  const [currentZoom, setCurrentZoom] = useState(initialZoom);
   const lockedPinRef = useRef(null);
   const keralaCenter = [10.8505, 76.2711];
 
@@ -72,7 +108,10 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
   };
 
   const initialCenter = searchedLocation ? [searchedLocation.lat, searchedLocation.lng] : keralaCenter;
-  const initialZoom = searchedLocation ? 14 : 7;
+
+  const currentRadius = getMarkerRadius(currentZoom);
+  const currentWeight = getMarkerWeight(currentZoom);
+  const currentOpacity = getMarkerOpacity(currentZoom);
 
   return (
     <div className={`map-wrapper ${isReportingMode ? 'reporting-active' : ''}`}>
@@ -93,6 +132,7 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
           onMapClick={onMapClick}
           searchedLocation={searchedLocation}
           keralaGeoJson={keralaGeoJson}
+          onZoomChange={setCurrentZoom}
         />
 
         {keralaGeoJson && (
@@ -121,12 +161,12 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
             <CircleMarker
               key={report.id}
               center={[report.lat, report.lng]}
-              radius={10}
+              radius={currentRadius}
               pathOptions={{
                 color: getSpeedColor(report.speed),
                 fillColor: getSpeedColor(report.speed),
-                fillOpacity: 0.4,
-                weight: 2
+                fillOpacity: currentOpacity,
+                weight: currentWeight
               }}
             >
               <Popup className="custom-popup">

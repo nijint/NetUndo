@@ -2,6 +2,12 @@ import React from 'react';
 import { MapPin, WifiOff, Activity } from 'lucide-react';
 
 const SPEED_COLORS = {
+  'Excellent (5G)': 'var(--coverage-violet)',
+  '5G Speed': 'var(--coverage-violet)',
+  '5G': 'var(--coverage-violet)',
+  'Good (4G)': 'var(--coverage-green)',
+  '4G Speed': 'var(--coverage-green)',
+  '4G': 'var(--coverage-green)',
   'Excellent (5G/4G)': 'var(--coverage-green)',
   'Fair (3G)': 'var(--coverage-orange)',
   'Poor (2G/E)': 'var(--coverage-red)',
@@ -37,6 +43,28 @@ const Sidebar = ({ selectedNetwork, setSelectedNetwork, isReportingMode, setIsRe
             <option key={net.id} value={net.id}>{net.label}</option>
           ))}
         </select>
+      </div>
+
+      <div className="control-group">
+        <label>Signal Key</label>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--coverage-violet)', display: 'inline-block', boxShadow: '0 0 6px var(--coverage-violet)' }}></span>
+            <span style={{ color: '#fff', fontWeight: 600 }}>5G Violet</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--coverage-green)', display: 'inline-block', boxShadow: '0 0 6px var(--coverage-green)' }}></span>
+            <span style={{ color: '#fff', fontWeight: 600 }}>4G Green</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--coverage-orange)', display: 'inline-block' }}></span>
+            <span>3G Orange</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--coverage-red)', display: 'inline-block' }}></span>
+            <span>2G / Dead</span>
+          </div>
+        </div>
       </div>
 
       <button 

@@ -4,6 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
 
 const SPEED_COLORS = {
+  'Excellent (5G)': 'var(--coverage-violet)',
+  '5G Speed': 'var(--coverage-violet)',
+  '5G': 'var(--coverage-violet)',
+  'Good (4G)': 'var(--coverage-green)',
+  '4G Speed': 'var(--coverage-green)',
+  '4G': 'var(--coverage-green)',
   'Excellent (5G/4G)': 'var(--coverage-green)',
   'Fair (3G)': 'var(--coverage-orange)',
   'Poor (2G/E)': 'var(--coverage-red)',

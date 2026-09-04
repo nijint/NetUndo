@@ -19,7 +19,8 @@
   --danger-red: #ff3366;
   
   /* Coverage Colors */
-  --coverage-green: #00e676; /* 5G/4G */
+  --coverage-violet: #a855f7; /* 5G */
+  --coverage-green: #00e676; /* 4G */
   --coverage-orange: #ff9100; /* 3G */
   --coverage-red: #ff3366; /* 2G / No Signal */
 }

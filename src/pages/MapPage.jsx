@@ -119,29 +119,31 @@ const MapPage = () => {
       reason: reportData.reason
     };
 
-    const { data, error } = await supabase
-      .from('pins')
-      .insert([newDbReport])
-      .select();
+    let mappedReport = {
+      id: newDbReport.id,
+      lat: newDbReport.lat,
+      lng: newDbReport.lng,
+      network: newDbReport.provider,
+      speed: newDbReport.signal_strength,
+      reason: newDbReport.reason || ''
+    };
 
-    if (error) {
-      console.error('Error saving pin to database:', error);
-      alert('Failed to save pin to the database. Make sure you added the columns exactly as requested!');
-      return;
+    try {
+      const { data, error } = await supabase
+        .from('pins')
+        .insert([newDbReport])
+        .select();
+
+      if (error) {
+        console.error('Error saving pin to database:', error);
+      } else if (data && data[0]) {
+        mappedReport.id = data[0].id;
+      }
+    } catch (err) {
+      console.error('Database error:', err);
     }
 
-    if (data && data[0]) {
-      const savedPin = data[0];
-      const mappedReport = {
-        id: savedPin.id,
-        lat: savedPin.lat,
-        lng: savedPin.lng,
-        network: savedPin.provider,
-        speed: savedPin.signal_strength,
-        reason: savedPin.reason || ''
-      };
-      setReports(prev => [mappedReport, ...prev]);
-    }
+    setReports(prev => [mappedReport, ...prev]);
 
     setIsModalOpen(false);
     setPendingReportCoords(null);

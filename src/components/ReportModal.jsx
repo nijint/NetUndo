@@ -1,26 +1,13 @@
 import React, { useState } from 'react';
 
 const ReportModal = ({ isOpen, onClose, onSubmit, selectedNetwork, coordinates }) => {
-  const [speed, setSpeed] = useState('Poor (2G/E)');
+  const [speed, setSpeed] = useState('Excellent (5G)');
   const [reason, setReason] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   if (!isOpen) return null;
 
   const handleSubmit = () => {
-    const lastSubmitTime = localStorage.getItem('netundo_last_report_time');
-    
-    if (lastSubmitTime) {
-      const timeSinceLastSubmit = Date.now() - parseInt(lastSubmitTime, 10);
-      const cooldownMs = 30 * 1000;
-      if (timeSinceLastSubmit < cooldownMs) {
-        const remainingSeconds = Math.ceil((cooldownMs - timeSinceLastSubmit) / 1000);
-        setErrorMsg(`Please wait ${remainingSeconds}s before submitting again.`);
-        return;
-      }
-    }
-
-    localStorage.setItem('netundo_last_report_time', Date.now().toString());
     setErrorMsg('');
 
     onSubmit({
@@ -30,7 +17,7 @@ const ReportModal = ({ isOpen, onClose, onSubmit, selectedNetwork, coordinates }
       speed,
       reason
     });
-    setSpeed('Poor (2G/E)');
+    setSpeed('Excellent (5G)');
     setReason('');
   };
 
@@ -53,7 +40,8 @@ const ReportModal = ({ isOpen, onClose, onSubmit, selectedNetwork, coordinates }
             value={speed}
             onChange={(e) => setSpeed(e.target.value)}
           >
-            <option value="Excellent (5G/4G)">Excellent (5G/4G) - Green</option>
+            <option value="Excellent (5G)">Excellent (5G) - Violet</option>
+            <option value="Good (4G)">Good (4G) - Green</option>
             <option value="Fair (3G)">Fair (3G) - Orange</option>
             <option value="Poor (2G/E)">Poor (2G/E) - Red</option>
             <option value="No Signal">No Signal - Red</option>

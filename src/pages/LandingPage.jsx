@@ -9,7 +9,7 @@ const AnimatedLogo = () => {
     { text: '2G', color: 'red', level: 1 },
     { text: '3G', color: 'orange', level: 2 },
     { text: '4G', color: 'green', level: 3 },
-    { text: '5G', color: 'green', level: 4 }
+    { text: '5G', color: 'violet', level: 4 }
   ];
   const [index, setIndex] = useState(4);
 

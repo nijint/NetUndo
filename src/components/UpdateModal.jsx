@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const UpdateModal = ({ isOpen, onClose, onSubmit, report }) => {
-  const [speed, setSpeed] = useState('Excellent (5G/4G)');
+  const [speed, setSpeed] = useState('Excellent (5G)');
   const [reason, setReason] = useState('');
 
   if (!isOpen || !report) return null;
@@ -12,7 +12,7 @@ const UpdateModal = ({ isOpen, onClose, onSubmit, report }) => {
       proposed_speed: speed,
       reason
     });
-    setSpeed('Excellent (5G/4G)');
+    setSpeed('Excellent (5G)');
     setReason('');
   };
 
@@ -35,7 +35,8 @@ const UpdateModal = ({ isOpen, onClose, onSubmit, report }) => {
             value={speed}
             onChange={(e) => setSpeed(e.target.value)}
           >
-            <option value="Excellent (5G/4G)">Excellent (5G/4G) - Green</option>
+            <option value="Excellent (5G)">Excellent (5G) - Violet</option>
+            <option value="Good (4G)">Good (4G) - Green</option>
             <option value="Fair (3G)">Fair (3G) - Orange</option>
             <option value="Poor (2G/E)">Poor (2G/E) - Red</option>
             <option value="No Signal">No Signal - Red</option>
