@@ -5,7 +5,7 @@ const SuccessModal = ({ isOpen, onClose, title, message }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" style={{ zIndex: 9999 }}>
+    <div className="modal-overlay" style={{ zIndex: 10000 }}>
       <div className="modal-content glass-panel" style={{ textAlign: 'center', padding: '40px 24px', maxWidth: '400px' }}>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
           <CheckCircle size={64} color="var(--accent-primary)" />

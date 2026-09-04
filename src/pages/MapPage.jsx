@@ -200,7 +200,7 @@ const MapPage = () => {
           position: 'absolute',
           top: '24px',
           left: '24px',
-          zIndex: 3000,
+          zIndex: 1000,
           background: 'rgba(6, 20, 14, 0.8)',
           border: '1px solid rgba(255,255,255,0.1)',
           backdropFilter: 'blur(8px)',

@@ -173,10 +173,10 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
       {toastMsg && (
         <div style={{
           position: 'absolute',
-          top: '20px',
+          top: '75px',
           left: '50%',
           transform: 'translateX(-50%)',
-          zIndex: 2000,
+          zIndex: 9999,
           background: 'rgba(255, 51, 102, 0.95)',
           color: '#ffffff',
           padding: '10px 20px',
@@ -188,7 +188,8 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
           pointerEvents: 'none',
           textAlign: 'center',
           animation: 'fadeInDown 0.3s ease-out',
-          whiteSpace: 'nowrap'
+          maxWidth: '90%',
+          width: 'max-content'
         }}>
           {toastMsg}
         </div>

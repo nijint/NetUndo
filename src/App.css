@@ -585,7 +585,7 @@
   height: 100vh;
   background: rgba(6, 20, 14, 0.8);
   backdrop-filter: blur(8px);
-  z-index: 2000;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
