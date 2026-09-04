@@ -52,20 +52,35 @@ const isPointInPolygon = (point, vs) => {
 };
 
 const isInsideKerala = (latlng, geoJson) => {
-  if (!geoJson || !geoJson.features || geoJson.features.length === 0) return true;
+  if (!geoJson) return true;
   const point = [latlng.lng, latlng.lat];
 
-  for (const feature of geoJson.features) {
-    const geometry = feature.geometry;
-    if (!geometry) continue;
+  const checkGeometry = (geometry) => {
+    if (!geometry) return false;
     if (geometry.type === 'Polygon') {
-      if (isPointInPolygon(point, geometry.coordinates[0])) return true;
+      return isPointInPolygon(point, geometry.coordinates[0]);
     } else if (geometry.type === 'MultiPolygon') {
       for (const coords of geometry.coordinates) {
         if (isPointInPolygon(point, coords[0])) return true;
       }
     }
+    return false;
+  };
+
+  if (geoJson.type === 'Polygon' || geoJson.type === 'MultiPolygon') {
+    return checkGeometry(geoJson);
   }
+
+  if (geoJson.type === 'Feature') {
+    return checkGeometry(geoJson.geometry);
+  }
+
+  if (geoJson.type === 'FeatureCollection' && Array.isArray(geoJson.features)) {
+    for (const feature of geoJson.features) {
+      if (checkGeometry(feature.geometry)) return true;
+    }
+  }
+
   return false;
 };
 
