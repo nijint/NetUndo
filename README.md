@@ -44,7 +44,15 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
    VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
    ```
 
-4. **Run the development server:**
+4. **Database Setup & 5G Migration:**
+   Run the queries in `supabase_schema.sql` inside your **Supabase SQL Editor** to create the `pins` table or to update existing legacy `Excellent (5G/4G)` pins to `5G`:
+   ```sql
+   UPDATE pins 
+   SET signal_strength = 'Excellent (5G)', network_type = '5G'
+   WHERE signal_strength = 'Excellent (5G/4G)';
+   ```
+
+5. **Run the development server:**
    ```bash
    npm run dev
    ```

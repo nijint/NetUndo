@@ -109,11 +109,17 @@ const MapPage = () => {
   };
 
   const handleModalSubmit = async (reportData) => {
+    let networkType = 'Cellular';
+    if (reportData.speed?.includes('5G')) networkType = '5G';
+    else if (reportData.speed?.includes('4G')) networkType = '4G';
+    else if (reportData.speed?.includes('3G')) networkType = '3G';
+    else if (reportData.speed?.includes('2G')) networkType = '2G';
+
     const newDbReport = {
       id: Date.now(),
       lat: reportData.lat,
       lng: reportData.lng,
-      network_type: 'Cellular',
+      network_type: networkType,
       provider: reportData.network,
       signal_strength: reportData.speed,
       reason: reportData.reason
