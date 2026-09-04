@@ -27,6 +27,12 @@ const MapPage = () => {
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isLocationPromptOpen, setIsLocationPromptOpen] = useState(!location.state?.searchedLocation);
+  const [toastMsg, setToastMsg] = useState('');
+
+  const handleOutsideBoundaryClick = () => {
+    setToastMsg('⚠️ Pinning is only allowed inside Kerala boundary!');
+    setTimeout(() => setToastMsg(''), 3500);
+  };
 
   useEffect(() => {
     if (location.state?.openReportingMode) {
@@ -228,6 +234,7 @@ const MapPage = () => {
         reports={reports}
         searchedLocation={searchedLocation}
         onUpdatePinClick={handleUpdatePinClick}
+        onOutsideBoundaryClick={handleOutsideBoundaryClick}
       />
       
       <div className="overlay-ui">
@@ -299,6 +306,34 @@ const MapPage = () => {
         onConfirm={handleLocationConfirm}
         onCancel={handleLocationCancel}
       />
+
+      {/* Global Toast Notification Banner */}
+      {toastMsg && (
+        <div style={{
+          position: 'fixed',
+          bottom: '85px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 99999,
+          background: 'rgba(255, 51, 102, 0.95)',
+          color: '#ffffff',
+          padding: '12px 24px',
+          borderRadius: '30px',
+          fontWeight: 700,
+          boxShadow: '0 10px 30px rgba(255, 51, 102, 0.5), 0 4px 20px rgba(0,0,0,0.6)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          fontSize: '0.88rem',
+          pointerEvents: 'none',
+          textAlign: 'center',
+          animation: 'fadeInUp 0.3s ease-out',
+          maxWidth: '90%',
+          width: 'max-content',
+          border: '1px solid rgba(255, 255, 255, 0.2)'
+        }}>
+          {toastMsg}
+        </div>
+      )}
     </div>
   );
 };

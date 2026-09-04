@@ -125,18 +125,12 @@ const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGe
   return null;
 };
 
-const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmPin, lockedReportCoords, reports, searchedLocation, onUpdatePinClick }) => {
+const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmPin, lockedReportCoords, reports, searchedLocation, onUpdatePinClick, onOutsideBoundaryClick }) => {
   const [keralaGeoJson, setKeralaGeoJson] = useState(null);
-  const [toastMsg, setToastMsg] = useState('');
   const initialZoom = searchedLocation ? 14 : 7;
   const [currentZoom, setCurrentZoom] = useState(initialZoom);
   const lockedPinRef = useRef(null);
   const keralaCenter = [10.8505, 76.2711];
-
-  const handleOutsideBoundaryClick = () => {
-    setToastMsg('⚠️ Pinning is only allowed inside Kerala boundary!');
-    setTimeout(() => setToastMsg(''), 3500);
-  };
 
   useEffect(() => {
     fetch('/kerala.json')
@@ -170,30 +164,6 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
 
   return (
     <div className={`map-wrapper ${isReportingMode ? 'reporting-active' : ''}`}>
-      {toastMsg && (
-        <div style={{
-          position: 'absolute',
-          top: '75px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 9999,
-          background: 'rgba(255, 51, 102, 0.95)',
-          color: '#ffffff',
-          padding: '10px 20px',
-          borderRadius: '30px',
-          fontWeight: 'bold',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
-          backdropFilter: 'blur(10px)',
-          fontSize: '0.85rem',
-          pointerEvents: 'none',
-          textAlign: 'center',
-          animation: 'fadeInDown 0.3s ease-out',
-          maxWidth: '90%',
-          width: 'max-content'
-        }}>
-          {toastMsg}
-        </div>
-      )}
       <LeafletMap
         center={initialCenter}
         zoom={initialZoom}
@@ -214,7 +184,7 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
           searchedLocation={searchedLocation}
           keralaGeoJson={keralaGeoJson}
           onZoomChange={setCurrentZoom}
-          onOutsideBoundaryClick={handleOutsideBoundaryClick}
+          onOutsideBoundaryClick={onOutsideBoundaryClick}
         />
 
         {keralaGeoJson && (
