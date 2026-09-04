@@ -5,6 +5,12 @@
   min-height: 100vh;
 }
 
+.leaflet-tile-pane .dark-tiles {
+  filter: grayscale(100%) invert(100%) contrast(140%) brightness(55%);
+}
+
+
+
 /* Animations */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
