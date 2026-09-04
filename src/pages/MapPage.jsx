@@ -232,7 +232,7 @@ const MapPage = () => {
       
       <div className="overlay-ui">
         {/* Sidebar pushed down slightly to make room for Home button */}
-        <div style={{ marginTop: '60px' }}>
+        <div className="sidebar-wrapper">
           <Sidebar 
             selectedNetwork={selectedNetwork}
             setSelectedNetwork={setSelectedNetwork}

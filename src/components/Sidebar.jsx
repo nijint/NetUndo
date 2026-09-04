@@ -47,7 +47,7 @@ const Sidebar = ({ selectedNetwork, setSelectedNetwork, isReportingMode, setIsRe
 
       <div className="control-group">
         <label>Signal Key</label>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+        <div className="signal-key-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--coverage-violet)', display: 'inline-block', boxShadow: '0 0 6px var(--coverage-violet)' }}></span>
             <span style={{ color: '#fff', fontWeight: 600 }}>5G Violet</span>
