@@ -244,7 +244,7 @@ const MapPage = () => {
       </div>
 
       {/* Permanent Floating Report Widget */}
-      <div className="floating-widget" style={{ justifyContent: searchedLocation ? 'space-between' : 'center' }}>
+      <div className={`floating-widget ${searchedLocation ? 'has-searched-location' : ''}`}>
         {searchedLocation && (
           <>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
