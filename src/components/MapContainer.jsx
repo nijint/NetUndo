@@ -39,13 +39,47 @@ const getMarkerOpacity = (zoom) => {
   return 0.5;
 };
 
-const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGeoJson, onZoomChange }) => {
+const isPointInPolygon = (point, vs) => {
+  const x = point[0], y = point[1];
+  let inside = false;
+  for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+    const xi = vs[i][0], yi = vs[i][1];
+    const xj = vs[j][0], yj = vs[j][1];
+    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+};
+
+const isInsideKerala = (latlng, geoJson) => {
+  if (!geoJson || !geoJson.features || geoJson.features.length === 0) return true;
+  const point = [latlng.lng, latlng.lat];
+
+  for (const feature of geoJson.features) {
+    const geometry = feature.geometry;
+    if (!geometry) continue;
+    if (geometry.type === 'Polygon') {
+      if (isPointInPolygon(point, geometry.coordinates[0])) return true;
+    } else if (geometry.type === 'MultiPolygon') {
+      for (const coords of geometry.coordinates) {
+        if (isPointInPolygon(point, coords[0])) return true;
+      }
+    }
+  }
+  return false;
+};
+
+const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGeoJson, onZoomChange, onOutsideBoundaryClick }) => {
   const map = useMap();
 
   useMapEvents({
     click(e) {
       if (isReportingMode) {
-        onMapClick(e.latlng);
+        if (isInsideKerala(e.latlng, keralaGeoJson)) {
+          onMapClick(e.latlng);
+        } else if (onOutsideBoundaryClick) {
+          onOutsideBoundaryClick();
+        }
       }
     },
     zoomend() {
@@ -67,9 +101,9 @@ const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGe
   }, [searchedLocation, map, onZoomChange]);
 
   useEffect(() => {
-    if (keralaGeoJson) {
+    if (keralaGeoJson && map) {
       const bounds = L.geoJSON(keralaGeoJson).getBounds();
-      map.setMaxBounds(bounds.pad(0.1));
+      map.setMaxBounds(bounds.pad(0.8));
     }
   }, [keralaGeoJson, map]);
 
@@ -78,10 +112,16 @@ const MapController = ({ isReportingMode, onMapClick, searchedLocation, keralaGe
 
 const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmPin, lockedReportCoords, reports, searchedLocation, onUpdatePinClick }) => {
   const [keralaGeoJson, setKeralaGeoJson] = useState(null);
+  const [toastMsg, setToastMsg] = useState('');
   const initialZoom = searchedLocation ? 14 : 7;
   const [currentZoom, setCurrentZoom] = useState(initialZoom);
   const lockedPinRef = useRef(null);
   const keralaCenter = [10.8505, 76.2711];
+
+  const handleOutsideBoundaryClick = () => {
+    setToastMsg('⚠️ Pinning is only allowed inside Kerala boundary!');
+    setTimeout(() => setToastMsg(''), 3500);
+  };
 
   useEffect(() => {
     fetch('/kerala.json')
@@ -115,10 +155,34 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
 
   return (
     <div className={`map-wrapper ${isReportingMode ? 'reporting-active' : ''}`}>
+      {toastMsg && (
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 2000,
+          background: 'rgba(255, 51, 102, 0.95)',
+          color: '#ffffff',
+          padding: '10px 20px',
+          borderRadius: '30px',
+          fontWeight: 'bold',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+          backdropFilter: 'blur(10px)',
+          fontSize: '0.85rem',
+          pointerEvents: 'none',
+          textAlign: 'center',
+          animation: 'fadeInDown 0.3s ease-out',
+          whiteSpace: 'nowrap'
+        }}>
+          {toastMsg}
+        </div>
+      )}
       <LeafletMap
         center={initialCenter}
         zoom={initialZoom}
-        minZoom={7}
+        minZoom={6}
+        maxBoundsViscosity={0.2}
         style={{ height: '100%', width: '100%' }}
         zoomControl={false}
       >
@@ -134,6 +198,7 @@ const MapContainer = ({ selectedNetwork, isReportingMode, onMapClick, onConfirmP
           searchedLocation={searchedLocation}
           keralaGeoJson={keralaGeoJson}
           onZoomChange={setCurrentZoom}
+          onOutsideBoundaryClick={handleOutsideBoundaryClick}
         />
 
         {keralaGeoJson && (
